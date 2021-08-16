@@ -6,9 +6,9 @@ type OrderItem = {
   quantity: number;
 };
 
-type Order = {
+export type Order = {
   id: string;
-  items: CartItem;
+  items: CartItem[];
   totalAmount: number;
   orderedAt: string;
   pickupLocation: PickupLocation;
@@ -21,24 +21,43 @@ type PickupLocation = {
   name: string;
 };
 
-const orderQuery = (id: string) => `
-  query getOrder {
-    order(id: ${id}){
+export type OrderResponse = {
+  order: {
+    id: string;
+  };
+  clientMutationId: string;
+};
+
+const orderQuery = `
+  query getOrder($id: ID!) {
+    order(id: $id){
       id
-      items
+      items {
+        product {
+          id
+          name
+          description
+          price
+          imageUrl
+        }
+        quantity
+      }
       totalAmount
       orderedAt
-      pickupLocation
+      pickupLocation {
+        id
+        name
+      }
       deliveryDate
       canceledAt
     }
   }
 `;
 
-const orderMutation = (items: OrderItem) => `
-  mutation postOrder {
+const orderMutation = `
+  mutation postOrder($items: [OrderItemInput!]!) {
     createOrder(input: {
-      items: ${items},
+      items: $items,
     })
     {
       order {
@@ -51,6 +70,12 @@ const orderMutation = (items: OrderItem) => `
 `;
 
 export async function getOrder(id: string): Promise<Order> {
-  const data = await graphqlRequest({ query: orderQuery(id) });
-  return data.products;
+  const data = await graphqlRequest({ query: orderQuery, variables: { id: id } });
+  return data.order;
+}
+
+export async function postOrder(cartItems: CartItem[]): Promise<OrderResponse> {
+  const orderItems: OrderItem[] = cartItems.map((item) => ({ productId: item.product.id, quantity: item.quantity }));
+  const data = await graphqlRequest({ query: orderMutation, variables: { items: orderItems } });
+  return data.createOrder;
 }

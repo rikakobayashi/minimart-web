@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { CartItem, getCartItem, clearCartItem, countCartItems, setCartItem } from "../../lib/cart";
 import styles from "./carts.module.css";
 import { Layout } from "../../components/Layout";
+import { postOrder } from "../../lib/order";
 
 export const CartPage: FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -21,10 +22,10 @@ export const CartPage: FC = () => {
 
   const priceSum = cartItems.reduce((sum, c) => sum + c.product.price * c.quantity, 0);
 
-  const order = () => {
+  const order = async () => {
+    const data = await postOrder(cartItems);
+    router.push(`/orders/${data.order.id}`);
     clearCartItem();
-    window.alert("注文しました");
-    router.push("/");
   };
 
   const upCount = (cartItem: CartItem) => {

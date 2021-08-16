@@ -1,0 +1,45 @@
+.wrapper {
+}
+
+.title {
+  background: tomato;
+  color: white;
+  padding: 8px;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.cartItemsList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.cartItem {
+  display: flex;
+  height: 40vw;
+  border-top: 1px #ddd solid;
+}
+.cartItem:last-child {
+  border-bottom: 1px #ddd solid;
+}
+
+.imageWrapper {
+  height: 100%;
+  width: 50%;
+}
+
+.image {
+  height: 100%;
+  width: 100%;
+}
+
+.info {
+  padding: 20px;
+}
+
+.price {
+  font-weight: bold;
+  text-align: right;
+  margin: 20px 10px;
+}
