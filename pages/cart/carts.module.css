@@ -48,3 +48,17 @@
   border-radius: 6px;
   cursor: pointer;
 }
+
+.quantity {
+  display: inline-block;
+}
+
+.button_small {
+  background: #aaa;
+  color: white;
+  border: none;
+  height: 24px;
+  width: 36px;
+  margin: 3px;
+  border-radius: 4px;
+}

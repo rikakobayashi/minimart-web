@@ -1,6 +1,6 @@
 import router from "next/router";
 import { FC, useEffect, useState } from "react";
-import { CartItem, getCartItem, clearCartItem, countCartItems } from "../../lib/cart";
+import { CartItem, getCartItem, clearCartItem, countCartItems, setCartItem } from "../../lib/cart";
 import styles from "./carts.module.css";
 import { Layout } from "../../components/Layout";
 
@@ -13,12 +13,34 @@ export const CartPage: FC = () => {
     setCartCount(countCartItems());
   }, []);
 
+  const updateCartItems = (cartItems: CartItem[]) => {
+    setCartItems(JSON.parse(JSON.stringify(cartItems)));
+    setCartItem(cartItems);
+    setCartCount(countCartItems());
+  };
+
   const priceSum = cartItems.reduce((sum, c) => sum + c.product.price * c.quantity, 0);
 
   const order = () => {
     clearCartItem();
     window.alert("注文しました");
     router.push("/");
+  };
+
+  const upCount = (cartItem: CartItem) => {
+    cartItem.quantity++;
+    updateCartItems(cartItems);
+  };
+
+  const downCount = (cartItem: CartItem) => {
+    cartItem.quantity--;
+    if (cartItem.quantity === 0) {
+      cartItems.splice(
+        cartItems.findIndex((item) => item.product.id === cartItem.product.id),
+        1
+      );
+    }
+    updateCartItems(cartItems);
   };
 
   return (
@@ -34,7 +56,15 @@ export const CartPage: FC = () => {
                 <div>
                   {item.product.name} {item.product.price}円
                 </div>
-                <div>{item.quantity}個</div>
+                <div>
+                  <div className={styles.quantity}>{item.quantity}個</div>
+                  <button className={styles.button_small} onClick={() => upCount(item)}>
+                    ＋
+                  </button>
+                  <button className={styles.button_small} onClick={() => downCount(item)}>
+                    −
+                  </button>
+                </div>
               </div>
             </div>
           ))}
