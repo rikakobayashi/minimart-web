@@ -19,20 +19,3 @@ export const setCartItem = (data: CartItem[]): void => {
 export const clearCartItem = () => {
   localStorage.setItem(CART_ITEMS, JSON.stringify([]));
 };
-
-// const listProductsQuery = `
-//   query listProducts {
-//     products {
-//       id
-//       name
-//       description
-//       price
-//       imageUrl
-//     }
-//   }
-// `;
-
-// export async function listProducts(): Promise<Product[]> {
-//   const data = await graphqlRequest({ query: listProductsQuery });
-//   return data.products;
-// }
