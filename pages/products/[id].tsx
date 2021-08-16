@@ -2,12 +2,17 @@ import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Layout } from "../../components/Layout";
 import { getProduct, Product } from "../../lib/product";
-import { CartItem, getCartItem, setCartItem } from "../../lib/cart";
+import { CartItem, countCartItems, getCartItem, setCartItem } from "../../lib/cart";
 import styles from "./products.module.css";
 
 const ProductPage: FC = () => {
   const router = useRouter();
   const [product, setProduct] = useState<Product | null>(null);
+  const [cartCount, setCartCount] = useState<number>(0);
+
+  useEffect(() => {
+    setCartCount(countCartItems());
+  }, []);
 
   useEffect(() => {
     if (typeof router.query.id == "string") {
@@ -27,10 +32,11 @@ const ProductPage: FC = () => {
       });
     }
     setCartItem(cartItems);
+    setCartCount(countCartItems());
   };
 
   return (
-    <Layout>
+    <Layout cartCount={cartCount}>
       {product && (
         <div className={styles.wrapper}>
           <div className={styles.imageWrapper}>

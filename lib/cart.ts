@@ -19,3 +19,8 @@ export const setCartItem = (data: CartItem[]): void => {
 export const clearCartItem = () => {
   localStorage.setItem(CART_ITEMS, JSON.stringify([]));
 };
+
+export const countCartItems = () => {
+  const items = getCartItem();
+  return items.reduce((sum, i) => sum + i.quantity, 0);
+};

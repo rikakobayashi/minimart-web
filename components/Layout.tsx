@@ -1,20 +1,13 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import styles from "./Layout.module.css";
-import { getCartItem } from "../lib/cart";
 
-type Props = {};
+type Props = {
+  cartCount: number;
+};
 
-export const Layout: FC<Props> = ({ children }) => {
-  const [cartCount, setCartCount] = useState<number>();
-
-  useEffect(() => {
-    const items = getCartItem();
-    const count = items.reduce((sum, i) => sum + i.quantity, 0);
-    setCartCount(count);
-  }, []);
-
+export const Layout: FC<Props> = ({ children, cartCount }) => {
   return (
     <div>
       <Head>

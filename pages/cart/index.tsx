@@ -1,14 +1,16 @@
 import router from "next/router";
 import { FC, useEffect, useState } from "react";
-import { CartItem, getCartItem, clearCartItem } from "../../lib/cart";
+import { CartItem, getCartItem, clearCartItem, countCartItems } from "../../lib/cart";
 import styles from "./carts.module.css";
 import { Layout } from "../../components/Layout";
 
 export const CartPage: FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartCount, setCartCount] = useState<number>(0);
 
   useEffect(() => {
     setCartItems(getCartItem());
+    setCartCount(countCartItems());
   }, []);
 
   const priceSum = cartItems.reduce((sum, c) => sum + c.product.price * c.quantity, 0);
@@ -20,7 +22,7 @@ export const CartPage: FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout cartCount={cartCount}>
       <div className={styles.wrapper}>
         <div className={styles.cartItemsList}>
           {cartItems.map((item, i) => (
