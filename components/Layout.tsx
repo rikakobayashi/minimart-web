@@ -1,11 +1,20 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import styles from "./Layout.module.css";
+import { getCartItem } from "../lib/cart";
 
 type Props = {};
 
 export const Layout: FC<Props> = ({ children }) => {
+  const [cartCount, setCartCount] = useState<number>();
+
+  useEffect(() => {
+    const items = getCartItem();
+    const count = items.reduce((sum, i) => sum + i.quantity, 0);
+    setCartCount(count);
+  }, []);
+
   return (
     <div>
       <Head>
@@ -20,7 +29,7 @@ export const Layout: FC<Props> = ({ children }) => {
           <Link href="/cart">
             <a>
               <span>🛒</span>
-              <span className={styles.cartCount}>({/* ここにカートに入っているアイテム数を入れる */})</span>
+              <span className={styles.cartCount}>({cartCount})</span>
             </a>
           </Link>
         </div>

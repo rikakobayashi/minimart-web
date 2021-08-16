@@ -1,0 +1,23 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.image {
+  width: 100%;
+}
+
+.name {
+  margin: 0;
+}
+
+.button {
+  background: tomato;
+  border: none;
+  padding: 8px;
+  font-size: 1.1em;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
